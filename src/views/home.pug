@@ -1,0 +1,7 @@
+extends base 
+include mixins/videoList 
+
+block content 
+    include partials/videoSearch    
+    +videoList(videos)
+        

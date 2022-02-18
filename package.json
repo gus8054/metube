@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "nodemon -L --exec babel-node src/server.js"
+    "dev": "nodemon -L --exec babel-node src/init.js"
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,9 @@
   "homepage": "https://github.com/gus8054/metube#readme",
   "dependencies": {
     "express": "^4.17.2",
-    "morgan": "^1.10.0"
+    "mongoose": "^6.2.2",
+    "morgan": "^1.10.0",
+    "pug": "^3.0.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.3",
