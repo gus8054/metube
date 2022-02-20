@@ -16,9 +16,14 @@
   },
   "homepage": "https://github.com/gus8054/metube#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "connect-mongo": "^4.6.0",
+    "dotenv": "^16.0.0",
     "express": "^4.17.2",
+    "express-session": "^1.17.2",
     "mongoose": "^6.2.2",
     "morgan": "^1.10.0",
+    "node-fetch": "^2.6.7",
     "pug": "^3.0.2"
   },
   "devDependencies": {
