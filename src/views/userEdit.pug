@@ -1,0 +1,13 @@
+extends base 
+
+block content 
+    if errorMessage
+        span=errorMessage
+    form(method="post",enctype="multipart/form-data")
+        input(type="file", name="avatar", accept="image/*")
+        input(type="text", name="username", placeholder="Id", required, minlength="1", maxlength="20", value=user.username)
+        input(type="email", name="email", placeholder="Email", required, value=user.email)
+        input(type="text", name="name", placeholder="name", required, minlength="1", maxlength="20", value=user.name)
+        input(type="submit", value="Edit Profile")
+    div 
+        a(href="/users/changePassword") Change Password &rarr;

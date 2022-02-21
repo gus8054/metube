@@ -106,9 +106,10 @@ export const finish = async (req, res) => {
   const userData = await userResponse.json();
   //여기까지 잘 됨
   const username = userData.login;
+
   let user = await User.findOne({ username, socialOnly: true });
   if (!user) {
-    //가입후 로그인
+    //가입되어 있지 않다면 가입
     let email = userData.email;
     if (!email) {
       const getEmail = await fetch(`https://api.github.com/user/emails`, {
@@ -119,10 +120,13 @@ export const finish = async (req, res) => {
         },
       });
       const userEmail = await getEmail.json();
-      console.log(userEmail);
       email = userEmail.filter(
         (item) => item.verified === true && item.visibility === "private"
       )[0].email;
+    }
+    const exist = await User.exists({ $or: [{ username }, { email }] });
+    if (exist) {
+      return res.redirect("/error");
     }
     user = await User.create({
       username,
@@ -137,6 +141,85 @@ export const finish = async (req, res) => {
   req.session.userLoggedIn = true;
   return res.redirect("/");
 };
-export const profile = (req, res) => res.send("user-profile");
-export const edit = (req, res) => res.send("user-edit");
+export const getEdit = (req, res) => {
+  const {
+    session: {
+      user: { _id, socialOnly },
+    },
+  } = req;
+  if (socialOnly) {
+    return res.redirect(`/users/${_id}`);
+  }
+  return res.render("userEdit", { pageTitle: "Edit User Profile" });
+};
+export const postEdit = async (req, res) => {
+  const {
+    body: { username, email, name },
+    session: { user },
+    file: { path },
+  } = req;
+  if (user.socialOnly) {
+    return res.redirect(`/users/${user._id}`);
+  }
+  if (username !== user.username) {
+    const exists = await User.exists({ username });
+    if (exists) {
+      return res.status(400).render("userEdit", {
+        pageTitle: "Edit User Profile",
+        errorMessage: "이미 있는 ID 입니다.",
+      });
+    }
+  }
+  if (email !== user.email) {
+    const exists = await User.exists({ email });
+    if (exists) {
+      return res.status(400).render("userEdit", {
+        pageTitle: "Edit User Profile",
+        errorMessage: "이미 있는 Email 입니다.",
+      });
+    }
+  }
+  const updatedUser = await User.findByIdAndUpdate(
+    user._id,
+    { username, email, name, avatarUrl: path ? path : user.avatarUrl },
+    { returnDocument: "after" }
+  );
+  req.session.user = updatedUser;
+  return res.redirect("/");
+};
+export const profile = (req, res) => {
+  const {
+    params: { id },
+  } = req;
+  return res.render("profile", { pageTitle: "Profile", id });
+};
+export const getChangePassword = (req, res) => {
+  return res.render("changePassword", { pageTitle: "Change Password" });
+};
+export const postChangePassword = async (req, res) => {
+  const {
+    body: { currentPassword, updatedPassword, updatedPasswordConfirmation },
+    session: {
+      user: { _id },
+    },
+  } = req;
+  if (updatedPassword !== updatedPasswordConfirmation) {
+    return res.status(400).render("changePassword", {
+      pageTitle: "Change Password",
+      errorMessage: "비밀번호 확인",
+    });
+  }
+  const user = await User.findById(_id);
+  const match = await bcrypt.compare(currentPassword, user.password);
+  if (!match) {
+    return res.status(400).render("changePassword", {
+      pageTitle: "Change Password",
+      errorMessage: "비밀번호가 틀립니다.",
+    });
+  }
+  user.password = updatedPassword;
+  req.session.user = await user.save();
+  return res.redirect("/login");
+};
 export const remove = (req, res) => res.send("user-remove");
+export const error = (req, res) => res.status(404).render("404");

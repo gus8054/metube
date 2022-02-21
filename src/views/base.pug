@@ -20,6 +20,8 @@ html(lang="en")
                         li
                             a(href="/login") Login
                     else 
+                        li 
+                            a(href=`/users/${user._id}`) #{user.name}'s Profile
                         li
                             a(href="/logout") Logout
             block content 

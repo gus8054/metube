@@ -1,13 +1,8 @@
 import Video from "../models/Video";
 
-const user = {
-  username: "gus8054",
-  loggedIn: true,
-};
-
 export const home = async (req, res) => {
   const videos = await Video.find({}).sort({ date: "desc" });
-  return res.render("home", { pageTitle: "HOME", videos, user });
+  return res.render("home", { pageTitle: "HOME", videos });
 };
 export const search = async (req, res) => {
   const {

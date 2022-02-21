@@ -1,0 +1,12 @@
+extends base 
+
+block content 
+    ul
+        li 
+            img(src=user.avatarUrl)
+        li ID : #{user.username} 
+        li NAME : #{user.name} 
+        li EMAIL : #{user.email} 
+    if String(user._id) === id && !user.socialOnly
+        div 
+            a(href="/users/edit") Edit Profile &rarr; 
