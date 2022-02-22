@@ -9,9 +9,10 @@ const videoSchema = new mongoose.Schema({
     maxLength: 20,
   },
   author: {
-    type: String,
+    type: "ObjectId",
     required: true,
     trim: true,
+    ref: "User",
   },
   meta: {
     views: {

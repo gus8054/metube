@@ -8,7 +8,7 @@ import {
   postEdit,
   remove,
 } from "../controllers/videoController";
-import { onlyLoggedInUser } from "../middlewares/middleware";
+import { onlyLoggedInUser, isAuthorUser } from "../middlewares/middleware";
 const videoRouter = express.Router();
 
 videoRouter
@@ -19,9 +19,9 @@ videoRouter
 videoRouter.get("/:id", watch);
 videoRouter
   .route("/:id/edit")
-  .all(onlyLoggedInUser)
+  .all(onlyLoggedInUser, isAuthorUser)
   .get(getEdit)
   .post(postEdit);
-videoRouter.get("/:id/remove", onlyLoggedInUser, remove);
+videoRouter.get("/:id/remove", onlyLoggedInUser, isAuthorUser, remove);
 
 export default videoRouter;

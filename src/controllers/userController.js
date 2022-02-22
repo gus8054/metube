@@ -64,6 +64,7 @@ export const logout = (req, res) => {
   req.session.destroy();
   res.redirect("/");
 };
+////
 export const start = (req, res) => {
   const baseUrl = "https://github.com/login/oauth/authorize";
   const config = {
@@ -104,7 +105,6 @@ export const finish = async (req, res) => {
     },
   });
   const userData = await userResponse.json();
-  //여기까지 잘 됨
   const username = userData.login;
 
   let user = await User.findOne({ username, socialOnly: true });
@@ -126,6 +126,7 @@ export const finish = async (req, res) => {
     }
     const exist = await User.exists({ $or: [{ username }, { email }] });
     if (exist) {
+      //존재하는 ID, email
       return res.redirect("/error");
     }
     user = await User.create({
@@ -156,8 +157,9 @@ export const postEdit = async (req, res) => {
   const {
     body: { username, email, name },
     session: { user },
-    file: { path },
+    file,
   } = req;
+
   if (user.socialOnly) {
     return res.redirect(`/users/${user._id}`);
   }
@@ -181,17 +183,23 @@ export const postEdit = async (req, res) => {
   }
   const updatedUser = await User.findByIdAndUpdate(
     user._id,
-    { username, email, name, avatarUrl: path ? path : user.avatarUrl },
+    {
+      username,
+      email,
+      name,
+      avatarUrl: file ? `/${file.path}` : user.avatarUrl,
+    },
     { returnDocument: "after" }
   );
   req.session.user = updatedUser;
-  return res.redirect("/");
+  return res.redirect(`/users/${user._id}`);
 };
-export const profile = (req, res) => {
+export const profile = async (req, res) => {
   const {
     params: { id },
   } = req;
-  return res.render("profile", { pageTitle: "Profile", id });
+  const userProfile = await User.findById(id).populate("videos");
+  return res.render("profile", { pageTitle: "Profile", userProfile });
 };
 export const getChangePassword = (req, res) => {
   return res.render("changePassword", { pageTitle: "Change Password" });

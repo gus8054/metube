@@ -3,10 +3,14 @@ extends base
 block content 
     ul
         li 
-            img(src=user.avatarUrl)
-        li ID : #{user.username} 
-        li NAME : #{user.name} 
-        li EMAIL : #{user.email} 
-    if String(user._id) === id && !user.socialOnly
+            img(src=userProfile.avatarUrl)
+        li ID : #{userProfile.username} 
+        li NAME : #{userProfile.name} 
+        li EMAIL : #{userProfile.email} 
+    ul 
+        each video in userProfile.videos
+            li
+                a(href=`/videos/${video._id}`)=video.title
+    if String(userProfile._id) === user._id && !user.socialOnly
         div 
             a(href="/users/edit") Edit Profile &rarr; 

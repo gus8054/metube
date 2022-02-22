@@ -3,7 +3,6 @@ mixin videoList(videos)
         each video in videos 
             li
                 a(href=`/videos/${video._id}`)=video.title
-            li=video.author
             li=video.hashtags
             hr
         else 

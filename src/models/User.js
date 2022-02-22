@@ -36,6 +36,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     default: false,
   },
+  videos: {
+    type: [mongoose.ObjectId],
+    ref: "Video",
+  },
 });
 
 userSchema.pre("save", async function (next) {

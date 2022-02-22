@@ -3,14 +3,15 @@ extends base
 block content 
     h3=video.title
     ul 
-        li 저자 #{video.author}
-        li 조회수 #{video.meta.views}
-        li 👍 #{video.meta.good}
-        li 👎 #{video.meta.bad}
+        li
+            a(href=`/users/${video.author._id}`)  저자 : #{video.author.name}
+        li 조회수 : #{video.meta.views}
+        li 👍 : #{video.meta.good}
+        li 👎 : #{video.meta.bad}
         li=video.meta.date.toString().split("GMT")[0].trim()
         li=video.hashtags.toString()
-        
-    h4 
-        a(href=`${video._id}/edit`) Edit &rarr;
-    h4
-        a(href=`${video._id}/remove`) Delete &rarr;
+    if String(video.author._id) === String(user._id)
+        h4 
+            a(href=`${video._id}/edit`) Edit &rarr;
+        h4
+            a(href=`${video._id}/remove`) Delete &rarr;
