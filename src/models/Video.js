@@ -33,6 +33,10 @@ const videoSchema = new mongoose.Schema({
     date: { type: Date, default: Date.now },
   },
   hashtags: [String],
+  videoUrl: {
+    type: String,
+    required: true,
+  },
 });
 
 videoSchema.static("handleHashtags", (hashtags) => {

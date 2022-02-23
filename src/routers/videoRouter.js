@@ -1,5 +1,5 @@
 import express from "express";
-import { all } from "express/lib/application";
+// import { all } from "express/lib/application";
 import {
   watch,
   getUpload,
@@ -8,14 +8,18 @@ import {
   postEdit,
   remove,
 } from "../controllers/videoController";
-import { onlyLoggedInUser, isAuthorUser } from "../middlewares/middleware";
+import {
+  onlyLoggedInUser,
+  isAuthorUser,
+  uploadVideo,
+} from "../middlewares/middleware";
 const videoRouter = express.Router();
 
 videoRouter
   .route("/upload")
   .all(onlyLoggedInUser)
   .get(getUpload)
-  .post(postUpload);
+  .post(uploadVideo.single("video"), postUpload);
 videoRouter.get("/:id", watch);
 videoRouter
   .route("/:id/edit")

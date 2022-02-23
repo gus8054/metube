@@ -2,6 +2,7 @@ extends base
 
 block content 
     h3=video.title
+    video(src=`/${video.videoUrl}`, controls) 
     ul 
         li
             a(href=`/users/${video.author._id}`)  저자 : #{video.author.name}

@@ -37,12 +37,14 @@ export const postUpload = async (req, res) => {
     session: {
       user: { _id, videos },
     },
+    file: { path: videoUrl },
   } = req;
   try {
     const video = await Video.create({
       title,
       author: _id,
       hashtags: Video.handleHashtags(hashtags),
+      videoUrl,
     });
     videos.push(video._id);
     await User.findByIdAndUpdate(_id, { videos });

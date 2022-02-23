@@ -12,7 +12,7 @@ import {
 import {
   onlyLoggedInUser,
   onlyUnLoggedInUser,
-  uploadAvatarUrl,
+  uploadAvatar,
 } from "../middlewares/middleware";
 const userRouter = express.Router();
 
@@ -20,7 +20,7 @@ userRouter
   .route("/edit")
   .all(onlyLoggedInUser)
   .get(getEdit)
-  .post(uploadAvatarUrl.single("avatar"), postEdit);
+  .post(uploadAvatar.single("avatar"), postEdit);
 userRouter.get("/remove", onlyLoggedInUser, remove);
 userRouter.get("/start", onlyUnLoggedInUser, start);
 userRouter.get("/finish", onlyUnLoggedInUser, finish);
