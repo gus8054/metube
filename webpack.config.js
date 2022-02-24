@@ -7,10 +7,13 @@ module.exports = {
       filename: "css/style.css",
     }),
   ],
-  entry: "./src/client/js/main.js",
+  entry: {
+    main: "./src/client/js/main.js",
+    videoPlayer: "./src/client/js/videoPlayer.js",
+  },
   output: {
     clean: true,
-    filename: "js/main.js",
+    filename: "js/[name].js",
     path: path.resolve(__dirname, "dist"),
   },
   watch: true,
