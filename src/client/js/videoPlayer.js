@@ -1,7 +1,7 @@
 const video = document.querySelector("#video");
 const playBtn = document.querySelector("#playBtn");
 const muteBtn = document.querySelector("#muteBtn");
-const volume = document.querySelector("#volume");
+const volumeRange = document.querySelector("#volumeRange");
 let volumeValue = 0;
 const duration = document.querySelector("#duration");
 const currentTime = document.querySelector("#currentTime");
@@ -9,31 +9,40 @@ const currentTime = document.querySelector("#currentTime");
 const handlePlayBtn = () => {
   if (video.paused) {
     video.play();
-    playBtn.innerText = "Pause";
   } else {
     video.pause();
-    playBtn.innerText = "Play";
   }
 };
-
+const handlePlay = () => {
+  playBtn.innerText = video.paused ? "Play" : "Pause";
+};
 const handleMuteBtn = () => {
   if (video.muted) {
     video.muted = false;
-    muteBtn.innerText = "Sound On";
-    volume.value = volumeValue;
+    // volume.value = volumeValue;
   } else {
     video.muted = true;
-    muteBtn.innerText = "Sound Off";
-    volume.value = 0;
+    // volume.value = 0;
   }
 };
 
-const handleVolume = (event) => {
+const handleVolumeRange = (event) => {
   video.volume = event.target.value;
-  volumeValue = video.volume;
-  muteBtn.innerText = video.volume ? "Sound On" : "Sound Off";
+  // volumeValue = video.volume;
+  // muteBtn.innerText = video.volume ? "Sound On" : "Sound Off";
 };
 
+const handleVolume = (event) => {
+  const currentVolume = event.target.volume;
+  console.log(event);
+  if (!Boolean(currentVolume) || event.target.muted) {
+    muteBtn.innerText = "Sound On";
+    volumeRange.value = 0;
+  } else {
+    muteBtn.innerText = "Sound Off";
+    volumeRange.value = currentVolume;
+  }
+};
 const handleDuration = () => {
   const second = Math.floor(video.duration) * 1000;
   duration.innerText = new Date(second).toUTCString().split(" ")[4];
@@ -45,8 +54,13 @@ const handleCurrentTime = () => {
 };
 
 playBtn.addEventListener("click", handlePlayBtn);
+video.addEventListener("play", handlePlay);
+video.addEventListener("pause", handlePlay);
+
 muteBtn.addEventListener("click", handleMuteBtn);
-volume.addEventListener("input", handleVolume);
+volumeRange.addEventListener("input", handleVolumeRange);
+video.addEventListener("volumechange", handleVolume);
+
 video.addEventListener("loadedmetadata", handleDuration);
 if (video.readyState >= 1) handleDuration();
 video.addEventListener("timeupdate", handleCurrentTime);

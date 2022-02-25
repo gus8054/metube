@@ -38,9 +38,9 @@ export const isAuthorUser = async (req, res, next) => {
   next();
 };
 export const uploadAvatar = multer({
-  dest: "uploads/avatar",
+  dest: "uploads/avatars",
 });
 export const uploadVideo = multer({
-  dest: "uploads/video",
-  limits: { fieldSize: 10000000 },
+  dest: "uploads/videos",
+  limits: { fieldSize: 50000000 },
 });

@@ -2,13 +2,20 @@ extends base
 
 block content
   h3= video.title
-  video#video(src=`/${video.videoUrl}`, controls, preload="metadata") 
+  video#video(src=`/${video.videoUrl}`, controls, preload) 
   div
     button#playBtn Play
-    button#muteBtn Sound On
+    button#muteBtn Sound Off
   div
     label(for="volume") Volume
-    input#volume(type="range", name="volume", min="0", max="1", step="0.1")
+    input#volumeRange(
+      type="range",
+      name="volume",
+      min="0",
+      max="1",
+      step="0.1",
+      value="1"
+    )
   div 
     span#currentTime 00:00
     span &nbsp;/&nbsp;
