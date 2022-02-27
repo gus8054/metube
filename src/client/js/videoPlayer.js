@@ -19,22 +19,15 @@ const handlePlay = () => {
 const handleMuteBtn = () => {
   if (video.muted) {
     video.muted = false;
-    // volume.value = volumeValue;
   } else {
     video.muted = true;
-    // volume.value = 0;
   }
 };
-
 const handleVolumeRange = (event) => {
   video.volume = event.target.value;
-  // volumeValue = video.volume;
-  // muteBtn.innerText = video.volume ? "Sound On" : "Sound Off";
 };
-
 const handleVolume = (event) => {
   const currentVolume = event.target.volume;
-  console.log(event);
   if (!Boolean(currentVolume) || event.target.muted) {
     muteBtn.innerText = "Sound On";
     volumeRange.value = 0;
