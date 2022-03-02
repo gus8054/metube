@@ -17,9 +17,11 @@ block content
       value="1"
     )
   div 
-    span#currentTime 00:00
+    span#currentTime 00:00:00
     span &nbsp;/&nbsp;
-    span#duration 00:00
+    span#duration 00:00:00
+  div 
+    input#timeLine(type="range", name="timeLine", min="0", step="1", value="0")
   ul 
     li
       a(href=`/users/${video.author._id}`) 저자 : #{ video.author.name }
